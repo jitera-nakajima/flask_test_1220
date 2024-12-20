@@ -1,5 +1,5 @@
 from datetime import datetime
-from models.subscription import Subscription
+from src.models.subscription import Subscription
 
 # SubscriptionServiceを定義します
 class SubscriptionService:
