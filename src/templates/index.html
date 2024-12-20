@@ -1,3 +1,4 @@
+`/src/templates/index.html`
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,15 +69,20 @@
         <div class="form-container">
             <!-- フォームのタイトル -->
             <h2 class="form-title">Subscribe to our Newsletter</h2>
-            <form class="form-content">
+            <form class="form-content" id="subscribeForm">
                 <!-- メールアドレス入力フィールド -->
                 <label class="form-label" for="email">Email Address</label>
-                <input class="form-input" type="email" id="email" placeholder="example@domain.com">
+                <input class="form-input" type="email" id="email" placeholder="example@domain.com" required>
                 
                 <!-- 業界選択セレクトボックス -->
                 <label class="form-label" for="industry">Industry</label>
-                <select class="form-select" id="industry">
+                <select class="form-select" id="industry" required>
                     <option disabled selected>please select your industry</option>
+                    <option value="technology">Technology</option>
+                    <option value="finance">Finance</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="education">Education</option>
+                    <option value="retail">Retail</option>
                 </select>
                 
                 <!-- 購読ボタン -->
@@ -84,5 +90,30 @@
             </form>
         </div>
     </div>
+    <script>
+        // フォームの送信イベントをリッスン
+        document.getElementById('subscribeForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+            const email = document.getElementById('email').value; // メールアドレスの値を取得
+            const industry = document.getElementById('industry').value; // 業界の値を取得
+
+            // サブスクリプションAPIにデータを送信
+            fetch('/api/subscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // JSON形式で送信
+                },
+                body: JSON.stringify({ email, industry }) // データをJSON文字列に変換
+            })
+            .then(response => response.json()) // レスポンスをJSONとして解析
+            .then(data => {
+                alert('Subscription successful!'); // サブスクリプション成功のアラート
+            })
+            .catch(error => {
+                console.error('Error:', error); // エラーをコンソールに出力
+                alert('Subscription failed.'); // サブスクリプション失敗のアラート
+            });
+        });
+    </script>
 </body>
 </html>
